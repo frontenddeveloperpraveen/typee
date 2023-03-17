@@ -21,8 +21,11 @@ def about(request):
     
 def feed(request):
     return render(request,"type/feedback.html")
-import smtplib
-def send_feedback(firstname, lastname, country, message):
+def send(request):
+    firstname = request.GET['firstname']
+    lastname = request.GET['lastname']
+    country = request.GET['country']
+    message = request.GET['subject']
     s = smtplib.SMTP('smtp.gmail.com', 587)
     s.starttls()
     sender = "noreply.tetrabytes@gmail.com"
@@ -31,7 +34,6 @@ def send_feedback(firstname, lastname, country, message):
     email_body = f"""From: Typee <{sender}>
 To: To Person <{recipient}>
 Subject: New Feedback from {firstname} {lastname} from {country}
-
 {message}
 """
     s.sendmail(sender, recipient, email_body)
@@ -46,11 +48,4 @@ Subject: New Feedback from {firstname} {lastname} from {country}
         con.close()
     except:
         pass
-
-def send(request):
-    firstname = request.GET['firstname']
-    lastname = request.GET['lastname']
-    country = request.GET['country']
-    message = request.GET['subject']
-    send_feedback(firstname, lastname, country, message)
     return render(request,"type/thankyou.html")
