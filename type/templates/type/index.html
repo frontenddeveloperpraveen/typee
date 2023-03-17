@@ -1,0 +1,269 @@
+{% extends "type/layouts/main.html"%}
+{%block content%}
+    <h1>Typing Test</h1>
+    <form action="" autocomplete="off" method="POST">
+        {% csrf_token %}
+        <br>
+        <label for="" class = "sample", id="put">{{sen}}</label> <br>
+        <div class="response">       
+        <input type="text", id="txt",name="provided"> <br>
+        <div class="try">
+        <button id="retry" onclick="window.location.reload()" href="127.0.0.1:8000/home">Retry</button>
+        </div>
+    </div>
+    </form>
+    <div class="container d-flex justify-content-center">
+        <div class="row">
+            <div class="col-md-6"> <button type="button" class="btn btn-lg btn-warning" data-toggle="modal" data-target="#myModal" id="butt"></button> </div>
+        </div>
+    </div>
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+            <div class="card">
+                <div class="text-right cross"> <i class="fa fa-times"></i> </div>
+                <div class="card-body text-center"> <img src="https://img.icons8.com/bubbles/200/000000/trophy.png">
+                    <h4>CONGRATULATIONS!</h4>
+                    <p id="wpm-show">Speed: 00 WPM!</p> <button class="btn btn-out btn-square continue">CONTINUE</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <style>
+        #retry{
+            width: 105px;
+            border-radius: 5px;
+            background-color: #4681f4;
+            background-color: #18f98f;
+            font-size: 15px;
+            font-weight: bold;
+            visibility: hidden;
+            cursor: pointer; 
+        }
+        .try {
+    
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    text-align: center;}
+        #wpm-show{
+            font-size: 15px;
+        }
+        #butt{
+            visibility: hidden;
+            margin-top: 1600px;
+        }
+        h1{
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            text-align: center;
+        }
+        .response{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        }
+        .sample{
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            font-size: 22px;
+            position: absolute;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+        }
+        #txt{
+            width: 675px;
+            height: 35px;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 19px;
+            font-weight: bold;
+        }    
+
+    </style>
+
+    <style>
+
+
+@import url(http://fonts.googleapis.com/css?family=Calibri:400,300,700);
+
+body {
+    font-family: 'Calibri', sans-serif !important
+}
+
+.mt-100 {
+    margin-top: 100px
+}
+
+.container {
+    margin-top: 200px
+}
+
+.card {
+    position: relative;
+    display: flex;
+    width: 450px;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 1px solid #d2d2dc;
+    border-radius: 4px;
+    -webkit-box-shadow: 0px 0px 5px 0px rgb(249, 249, 250);
+    -moz-box-shadow: 0px 0px 5px 0px rgba(212, 182, 212, 1);
+    box-shadow: 0px 0px 5px 0px rgb(161, 163, 164)
+}
+
+.card .card-body {
+    padding: 1rem 1rem
+}
+
+.card-body {
+    flex: 1 1 auto;
+    padding: 1.25rem
+}
+
+p {
+    font-size: 14px
+}
+
+h4 {
+    margin-top: 18px
+}
+
+.cross {
+    padding: 10px;
+    color: #d6312d;
+    cursor: pointer
+}
+
+.continue:focus {
+    outline: none
+}
+
+.continue {
+    border-radius: 5px;
+    text-transform: capitalize;
+    font-size: 13px;
+    padding: 8px 19px; 
+    cursor: pointer;
+    color: #fff;
+    background-color: #D50000
+}
+
+.continue:hover {
+    background-color: #D32F2F !important
+}
+
+
+
+
+    </style>
+    <script>
+        let res = document.getElementById("txt");
+        let state = document.getElementById("put");
+        let text1 = state.textContent;
+        let counter = 0
+        let back = 0
+        let know = 0
+        const myInput = document.getElementById("txt");
+        let startTime, endTime;
+
+// Start the timer
+function startTimer() {
+  startTime = new Date();
+}
+
+// Stop the timer and calculate the typing speed
+function stopTimer() {
+  endTime = new Date();
+  const timeDiff = endTime - startTime;
+  const seconds = timeDiff / 1000;
+  const numWords = text1.split(" ").length;
+  const wpm = Math.round(numWords / seconds * 60);
+  if (wpm <= 25 && wpm >=2) {
+    console.log(wpm)
+    wps +=10
+    console.log(wpm)
+  }
+  console.log(wpm)
+
+
+//Here
+const xhr = new XMLHttpRequest();
+const url = "/result";
+const myVariable = wpm;
+var myButton = document.getElementById("butt");
+myButton.click();
+var cdn = document.getElementById("wpm-show");
+cdn.innerHTML = `Your Speed : ${wpm} WPM`;
+const csrfToken = document.getElementsByName('csrfmiddlewaretoken')[0].value; // Obtain CSRF token from the form
+
+xhr.open("POST", url, true);
+xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+xhr.setRequestHeader("X-CSRFToken", csrfToken); // Include CSRF token as header
+xhr.onreadystatechange = function () {
+  if (xhr.readyState === 4 && xhr.status === 200) {
+    console.log(xhr.responseText);
+  }
+};
+const data = JSON.stringify({ my_variable: myVariable });
+xhr.send(data);
+const myButton2 = document.getElementById('retry');
+myButton2.style.visibility = 'visible';
+
+  //here end
+}
+
+
+res.addEventListener('keydown', function(event){
+  const key = event.key;
+  
+  if (key === "Backspace") {
+    //alert(key);
+    back = 1;
+    know = 1
+  } else {
+    back = 0;
+  }
+}) 
+     res.addEventListener("input",check)
+        function check(){
+            if (know === 0) {
+                startTimer();   
+            }
+            if (back === 1) {
+                back = 0
+                counter -= 1
+                know = 1
+            } else {
+            let len = res.value.length;
+            know = 1
+            //alert(len)
+            console.log(res.value)
+            //alert(counter)
+            //alert(text1.slice(0,counter+1))
+            
+            //alert(res.value[counter])
+            console.log(text1)
+            if (res.value !== text1.slice(0,counter+1)) {
+                //alert("Varuthu")
+                myInput.style.color = "red";
+                counter += 1;
+            } else {
+                //alert("Varala ");
+                console.log(len)
+                console.log(text1.length)
+                console.log(len === text1)
+                if (res.value === text1.trim()){
+                console.log("completed")
+                stopTimer();
+            }
+                
+                myInput.style.color = "green";
+                counter +=1
+            }
+        }
+
+        }
+    </script>
+{%endblock content%}

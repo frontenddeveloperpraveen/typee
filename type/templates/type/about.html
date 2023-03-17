@@ -1,0 +1,49 @@
+{% extends "type/layouts/main.html"%}
+{% block content%}
+    <button class="hire" disabled>Hire Me</button>
+    <div id="media">
+        <a href="https://instagram.com" target="_blank" class="a">
+        <i class="fa fa-instagram fa-3x" aria-hidden="true"></i> <br> <br></a>
+        <a href="https://twitter.com" target="_blank" class="a">
+        <i class="fa fa-twitter-square fa-3x" aria-hidden="true"></i></a>
+    </div>
+
+    <style>
+        body {
+  background-image: url("https://i.im.ge/2023/03/17/DjVxe9.hello-Im.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+    .hire{
+        width: 100px;
+        height: 40px;
+        background-color: #16BD90;
+        border-radius: 3px;
+        position:relative ;
+        left:300px;
+        top:450px;
+        font-weight: bold;
+        border-color: black;
+      
+    }
+    #media{
+        border: 5px;
+        position: relative;
+        top: 250px;
+        width: 50px;
+        height: 120px;
+        border-width: 2px;
+       
+    }
+    .a {
+  color: black; 
+  text-decoration: none; 
+}
+
+    
+
+    </style>
+
+  
+  
+{%endblock content%}
